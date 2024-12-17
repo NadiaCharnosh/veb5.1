@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Матем</title>
+    <style>
+        body {
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.text {
+    overflow-y: auto;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100%;
+}
+
+.goUp,
+.goDown {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 20vh;
+  height: 20vh;
+  background-color: rgb(255, 211, 254);
+}
+
+.insert {
+  margin: 0 90px;
+  align-self: center;
+
+}
+
+.main {
+  height: 60vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(10, 10vw);
+  grid-template-rows: 10vh 50vh;
+}
+
+.left {
+  grid-column: span 2;
+  grid-row: span 2;
+  background-color: rgb(218, 228, 255);
+}
+
+.center-up {
+ width: 80vw;
+  background-color: rgb(212, 243, 212);
+}
+
+.center-main {
+  grid-column: 3 / 9;
+  display: grid;
+  place-content: center;
+}
+
+.right {
+    grid-column: span 2;
+  grid-row: span 2;
+  background-color: rgb(218, 228, 255);
+}
+
+.goUp:hover > .insert {
+  display: none;
+}
+
+.goUp:hover > p {
+  display: none;
+}
+
+.insert__button-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+.insert__btn,
+.delete__btn {
+  margin: 5px 0;
+  padding: 10px 20px;
+ 
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.insert1{
+    margin-left: 80vw;
+}
+
+
+.new-rows {
+  display: none;
+  margin-top: 20px;
+  width: 80%;
+  text-align: left;
+}
+
+.new-row {
+  margin-bottom: 10px;
+}
+
+.new-row input {
+  padding: 5px;
+  width: 100%;
+}
+
+@media (max-width: 500px) {
+  .main {
+    height: 60vh;
+    width: 100vw;
+    grid-template-columns: repeat(2, 50%);
+    grid-template-rows: 30% 40% 30%;
+  }
+
+  .center-up {
+    grid-column: 1 / -1;
+    grid-row: 1 / 1;
+  }
+
+  .center-center {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+  }
+
+  .left {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    margin-right: 3px;
+  }
+
+  .right {
+    grid-column: 2 / -1;
+    grid-row: 3 / 4;
+    margin-left: 3px;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="goUp text">
+      <div class="insert">Text-x</div>
+      <p>
+      Рахуємо разом
+      </p>
+      <div class="insert__button-container">
+        <button class="insert__btn">Добавимо строку</button>
+        <button class="delete__btn">Видаляємо</button>
+      </div>
+      <div class="new-rows"></div>
+    </div>
+    <div class="main">
+      <div class="left text">
+        <h3>Ширина</h3>
+        <input class="width" type="text" style="width: 50px" />
+        <h3>Висота</h3>
+        <input class="height" type="text" style="width: 50px" />
+        <button class="result">Результат</button>
+      </div>
+      <div class="center-up text">
+        Математика....
+      </div>
+      <div class="center-main text">
+        <div class="area-result"></div>
+        <div class="mm-result">
+          <form class="number-form">
+            <h3>введіть 10 чисел з комою</h3>
+            <input class="number-input" type="text" style="width: 300px" />
+            <button type="button" class="number-submit">Вирухувати</button>
+          </form>
+        </div>
+      </div>
+      <div class="right text">
+        <label for="make-bold">Жирним:</label>
+        <input type="checkbox" id="make-bold" />
+      </div>
+    </div>
+    <div class="goDown text">
+      <p>
+       Вчимось..
+      </p>
+      <div class="insert1">Text-y</div>
+    </div>
+    <script>
+    // Попередній скрипт для обміну тексту
+    window.onload = function() {
+    var widthInput = document.querySelector('.width');
+    var heightInput = document.querySelector('.height');
+    var resultButton = document.querySelector('.result');
+    var areaResult = document.querySelector('.area-result');
+
+    function calculateArea() {
+        var width = parseFloat(widthInput.value);
+        var height = parseFloat(heightInput.value);
+
+        if (isNaN(width) || isNaN(height)) {
+            areaResult.innerHTML = 'Введіть коректні числові значення';
+        } else if (width <= 0 || height <= 0) {
+            areaResult.innerHTML = 'Ширина та висота мають бути додатними числами';
+        } else if (width > 100 || height > 100) {
+            areaResult.innerHTML = 'Ширина та висота не можуть перевищувати 100';
+        } else {
+            var area = width * height; 
+            areaResult.innerHTML = 'Площа: ' + area + ' квадратних одиниць';
+        }
+    }
+
+    resultButton.addEventListener('click', calculateArea);
+};
+
+      
+    // Попередній скрипт для мінімальних та максимальних значень
+    document.addEventListener("DOMContentLoaded", () => {
+        const cookies = document.cookie.split("; ").find(row => row.startsWith("minMaxData="));
+
+        if (cookies) {
+            const savedData = decodeURIComponent(cookies.split("=")[1]);
+            
+            const userChoice = confirm(`Saved data found: ${savedData}. Do you want to keep it?`);
+
+            if (userChoice) {
+                document.querySelector(".number-form").style.display = "none"; 
+                document.querySelector(".mm-result").textContent = savedData;
+            } else {
+                document.cookie = "minMaxData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                document.querySelector(".number-form").style.display = "block";
+                document.querySelector(".mm-result").textContent = "";
+            }
+        } else {
+            document.querySelector(".number-form").style.display = "block"; 
+        }
+
+        const inputField = document.querySelector(".number-input");
+        const submitButton = document.querySelector(".number-submit");
+        const formContainer = document.querySelector(".number-form");
+        const resultContainer = document.querySelector(".mm-result");
+
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const inputValues = inputField.value.split(",").map(Number);
+
+           
+            if (inputValues.some(isNaN)) {
+                alert("All entered values must be numbers.");
+                return;
+            }
+
+            const minValue = Math.min(...inputValues);
+            const maxValue = Math.max(...inputValues);
+
+            const result = `Min: ${minValue}, Max: ${maxValue}`;
+            alert(result);
+
+            document.cookie = `minMaxData=${encodeURIComponent(result)}; path=/; max-age=86400`;
+
+            resultContainer.textContent = result;
+            formContainer.style.display = "none";
+        });
+    });
+
+    // Попередній скрипт для курсиву
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkbox = document.getElementById('make-bold');
+        const textElement = document.querySelector('.center-up');
+
+        const savedBoldState = localStorage.getItem('isBold');
+        if (savedBoldState === 'true') {
+            textElement.style.fontWeight = 'bold';
+            checkbox.checked = true;
+        } else {
+            textElement.style.fontWeight = 'normal';
+            checkbox.checked = false;
+        }
+
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                textElement.style.fontWeight = 'bold';
+                localStorage.setItem('isBold', 'true');
+            } else {
+                textElement.style.fontWeight = 'normal';
+                localStorage.setItem('isBold', 'false');
+            }
+        });
+    });
+
+    // Попередній скрипт для додавання рядків
+    document.addEventListener('DOMContentLoaded', function () {
+        const divUpText = document.querySelector('.goUp');
+        const insertDiv = divUpText.querySelector('.insert');
+        const paragraph = divUpText.querySelector('p');
+        const buttonContainer = divUpText.querySelector('.insert__button-container');
+        const newRowsContainer = divUpText.querySelector('.new-rows');
+
+        loadData();
+
+        divUpText.addEventListener('mouseenter', function () {
+            insertDiv.style.display = 'none';
+            paragraph.style.display = 'none';
+
+            if (!newRowsContainer.hasChildNodes()) {
+                showContainers();
+            }
+        });
+
+        divUpText.addEventListener('mouseleave', function () {
+            if (!newRowsContainer.hasChildNodes()) {
+                insertDiv.style.display = 'block';
+                paragraph.style.display = 'block';
+                hideContainers();
+            }
+        });
+
+        buttonContainer.querySelector('.insert__btn').addEventListener('click', function () {
+            addNewRow('');
+            showContainers();
+            hideIntroElements();
+        });
+
+        buttonContainer.querySelector('.delete__btn').addEventListener('click', function () {
+            const lastRow = newRowsContainer.lastElementChild;
+            if (lastRow) {
+                newRowsContainer.removeChild(lastRow);
+                saveData();
+            }
+            if (!newRowsContainer.hasChildNodes()) {
+                showIntroElements();
+                hideContainers();
+            }
+        });
+
+        function addNewRow(value) {
+            const newRow = document.createElement('div');
+            newRow.classList.add('new-row');
+
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.value = value;
+
+            inputField.addEventListener('input', saveData);
+
+            newRow.appendChild(inputField);
+            newRowsContainer.appendChild(newRow);
+
+            saveData();
+        }
+
+        function loadData() {
+            const savedData = JSON.parse(localStorage.getItem('rowsData')) || [];
+
+            newRowsContainer.innerHTML = '';
+
+            savedData.forEach(data => {
+                if (data.trim() !== '') {
+                    addNewRow(data);
+                }
+            });
+
+            if (savedData.length > 0) {
+                showContainers();
+                hideIntroElements();
+            }
+        }
+
+        function saveData() {
+            const rows = document.querySelectorAll('.new-row input');
+            const rowsData = Array.from(rows)
+                .map(input => input.value)
+                .filter(value => value.trim() !== '');
+            localStorage.setItem('rowsData', JSON.stringify(rowsData));
+        }
+
+        function hideIntroElements() {
+            insertDiv.style.display = 'none';
+            paragraph.style.display = 'none';
+        }
+
+        function showIntroElements() {
+            insertDiv.style.display = 'block';
+            paragraph.style.display = 'block';
+        }
+
+        function showContainers() {
+            buttonContainer.style.display = 'flex';
+            newRowsContainer.style.display = 'block';
+        }
+
+        function hideContainers() {
+            buttonContainer.style.display = 'none';
+            newRowsContainer.style.display = 'none';
+        }
+    });
+
+    // Новий скрипт для перевірки трикутника та обчислення площі ромба
+    document.addEventListener('DOMContentLoaded', function() {
+    // Форма для перевірки трикутника
+    const triangleSideForm = document.createElement('form');
+    triangleSideForm.innerHTML = `
+        <h3>Перевірка можливості побудови трикутника</h3>
+        <input type="text" class="side-a" placeholder="Сторона A" style="width: 100px">
+        <input type="text" class="side-b" placeholder="Сторона B" style="width: 100px">
+        <input type="text" class="side-c" placeholder="Сторона C" style="width: 100px">
+        <button type="button" class="triangle-check">Перевірити</button>
+    `;
+    
+    const centerMain = document.querySelector('.center-main');
+    centerMain.appendChild(triangleSideForm);
+
+    const triangleCheckBtn = triangleSideForm.querySelector('.triangle-check');
+    const sideAInput = triangleSideForm.querySelector('.side-a');
+    const sideBInput = triangleSideForm.querySelector('.side-b');
+    const sideCInput = triangleSideForm.querySelector('.side-c');
+
+    triangleCheckBtn.addEventListener('click', function() {
+        const a = parseFloat(sideAInput.value);
+        const b = parseFloat(sideBInput.value);
+        const c = parseFloat(sideCInput.value);
+
+        if (isNaN(a) || isNaN(b) || isNaN(c)) {
+            alert('Введіть коректні числові значення сторін трикутника');
+            return;
+        }
+
+        const isTrianglePossible = 
+            (a + b > c) && (a + c > b) && (b + c > a);
+
+        // Обчислення площі трикутника за формулою Герона
+        const p = (a + b + c) / 2; // напівпериметр
+        const area = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+
+        const result = isTrianglePossible 
+            ? `Трикутник можливий. Площа трикутника: ${area.toFixed(2)} кв. одиниць` 
+            : 'Трикутник неможливий';
+
+        alert(result);
+        document.cookie = `triangleResult=${encodeURIComponent(result)}; path=/; max-age=86400`;
+    });
+
+    // Перевірка наявності cookies при завантаженні сторінки
+    const triangleCookie = document.cookie.split("; ")
+        .find(row => row.startsWith("triangleResult="));
+
+    if (triangleCookie) {
+        const savedResult = decodeURIComponent(triangleCookie.split("=")[1]);
+        const userChoice = confirm(`Збережений результат: ${savedResult}. Видалити дані?`);
+
+        if (userChoice) {
+            // Видалення cookies
+            document.cookie = "triangleResult=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            alert('Cookies видалені. Сторінка буде перезавантажена.');
+            location.reload();
+        } else {
+            alert('Cookies збережені. Перезавантажте сторінку для продовження.');
+        }
+    }
+
+    // Обчислення площі ромба
+    function calculateRhombusArea() {
+        const diagonal1 = 10;  // Приклад фіксованого значення першої діагоналі
+        const diagonal2 = 15;  // Приклад фіксованого значення другої діагоналі
+        const area = (diagonal1 * diagonal2) / 2;
+        
+        const areaResult = document.createElement('div');
+        areaResult.innerHTML = `Площа ромба: ${area} кв. одиниць`;
+        
+        // Додати результат у кінець контенту блоку 3
+        centerMain.appendChild(areaResult);
+    }
+
+    calculateRhombusArea();
+});
+    </script>
+  </body>
+</html>
